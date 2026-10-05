@@ -1,7 +1,7 @@
 import os
 from dataclasses import dataclass
 
-from dotenv import load_dotenv
+from dotenv import find_dotenv, load_dotenv
 
 
 @dataclass(frozen=True)
@@ -17,7 +17,7 @@ class Settings:
 
 
 def get_settings() -> Settings:
-    load_dotenv()
+    load_dotenv(find_dotenv(usecwd=True))
     defaults = Settings()
     return Settings(
         llm_base_url=os.getenv("LLM_BASE_URL", defaults.llm_base_url),

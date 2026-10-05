@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import pytest
 from langchain_core.embeddings import DeterministicFakeEmbedding
 from streamlit.testing.v1 import AppTest
@@ -11,7 +13,7 @@ def app(tmp_path, monkeypatch):
         "rag_generator.store.get_embeddings",
         lambda s: DeterministicFakeEmbedding(size=64),
     )
-    return AppTest.from_file("app.py", default_timeout=30)
+    return AppTest.from_file(str(Path(__file__).parents[1] / "app.py"), default_timeout=30)
 
 
 def test_app_runs(app):
