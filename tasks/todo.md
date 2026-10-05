@@ -6,14 +6,14 @@ See [plan.md](plan.md) for the architecture, interface contracts and risks. All 
 
 ## Phase 1: Foundation and a thin end-to-end slice
 
-## Task 1: Tooling and test scaffolding
+## Task 1: Tooling and test scaffolding ✅ implemented, verification pending (deps installing)
 
 **Description:** Add the project config and the shared offline test fixtures, so every later task can be tested without network access.
 
 **Acceptance criteria:**
-- [ ] `pyproject.toml` sets ruff (line length 100, py311) and pytest (`testpaths = ["tests"]`)
-- [ ] `.env.example` lists `LLM_BASE_URL`, `LLM_API_KEY`, `LLM_MODEL`, `EMBEDDING_MODEL`, `CHROMA_DIR`, `CHUNK_SIZE`, `CHUNK_OVERLAP` and `TOP_K`
-- [ ] `tests/conftest.py` provides the `settings` (a tmp Chroma dir), `fake_embeddings` (`DeterministicFakeEmbedding(size=64)`) and `store` fixtures
+- [x] `pyproject.toml` sets ruff (line length 100, py311) and pytest (`testpaths = ["tests"]`)
+- [x] `.env.example` lists `LLM_BASE_URL`, `LLM_API_KEY`, `LLM_MODEL`, `EMBEDDING_MODEL`, `CHROMA_DIR`, `CHUNK_SIZE`, `CHUNK_OVERLAP` and `TOP_K`
+- [x] `tests/conftest.py` provides the `settings` (a tmp Chroma dir), `fake_embeddings` (`DeterministicFakeEmbedding(size=64)`) and `store` fixtures
 
 **Verification:**
 - [ ] `pytest -q` runs with no errors (0 tests collected is fine)
