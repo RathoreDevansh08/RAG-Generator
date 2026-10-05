@@ -98,5 +98,9 @@ def test_xlsx_sheets(tmp_path: Path) -> None:
         pd.DataFrame({"a": [1, 2]}).to_excel(w, sheet_name="S1", index=False)
         pd.DataFrame({"b": ["x"]}).to_excel(w, sheet_name="S2", index=False)
     docs = load_file(p, "a.xlsx")
-    assert [(d.metadata["sheet"], d.metadata["row"]) for d in docs] == [("S1", 1), ("S1", 2), ("S2", 1)]
+    assert [(d.metadata["sheet"], d.metadata["row"]) for d in docs] == [
+        ("S1", 1),
+        ("S1", 2),
+        ("S2", 1),
+    ]
     assert all(d.metadata["tabular"] for d in docs)

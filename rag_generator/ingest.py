@@ -29,9 +29,7 @@ def split_documents(docs: list[Document], settings: Settings) -> list[Document]:
             if v is not None and isinstance(v, (str, int, float, bool))
         }
         source = str(meta.get("source", ""))
-        cid = hashlib.sha256(
-            (source + "\x00" + chunk.page_content).encode()
-        ).hexdigest()[:32]
+        cid = hashlib.sha256((source + "\x00" + chunk.page_content).encode()).hexdigest()[:32]
         if cid in seen:
             continue
         seen.add(cid)

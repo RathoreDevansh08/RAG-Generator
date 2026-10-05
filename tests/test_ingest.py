@@ -19,9 +19,7 @@ def test_tabular_short_not_split(settings):
 
 
 def test_none_metadata_dropped(settings):
-    doc = Document(
-        page_content="hello", metadata={"source": "a.txt", "page": None, "obj": [1]}
-    )
+    doc = Document(page_content="hello", metadata={"source": "a.txt", "page": None, "obj": [1]})
     (chunk,) = split_documents([doc], settings)
     assert "page" not in chunk.metadata
     assert "obj" not in chunk.metadata
