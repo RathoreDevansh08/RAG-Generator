@@ -150,9 +150,9 @@ See [plan.md](plan.md) for the architecture, interface contracts and risks. All 
 **Description:** Let users switch between saved sets, see each set's files with chunk counts, delete a set after confirming, and keep a separate chat history per set.
 
 **Acceptance criteria:**
-- [ ] After a restart, the sets created earlier are listed and can be queried
-- [ ] Switching sets shows that set's chat history and sources only
-- [ ] Delete removes the collection, but only after the confirmation checkbox is ticked
+- [x] After a restart, the sets created earlier are listed and can be queried
+- [x] Switching sets shows that set's chat history and sources only
+- [x] Delete removes the collection, but only after the confirmation checkbox is ticked
 
 **Verification:**
 - [x] `pytest tests/test_store.py tests/test_app.py -q`
@@ -171,9 +171,9 @@ See [plan.md](plan.md) for the architecture, interface contracts and risks. All 
 **Description:** Make the app fail gracefully.
 
 **Acceptance criteria:**
-- [ ] If `LLM_API_KEY` is missing, a warning explains how to get a free Groq key and chat input is disabled, while indexing still works
+- [x] If `LLM_API_KEY` is missing, a warning explains how to get a free Groq key and chat input is disabled, while indexing still works
 - [ ] An unsupported or empty file shows a per-file `st.error`, and the other files still get indexed
-- [ ] LLM errors show a friendly message, with a specific hint when the error is a rate limit
+- [x] LLM errors show a friendly message, with a specific hint when the error is a rate limit
 
 **Verification:**
 - [x] `pytest tests/test_app.py -q`, which checks the warning and the disabled chat when no key is set
@@ -192,7 +192,7 @@ See [plan.md](plan.md) for the architecture, interface contracts and risks. All 
 
 **Acceptance criteria:**
 - [ ] A new reader can follow the README to set up and run the app
-- [ ] Coverage of `rag_generator/` is at least 80%
+- [x] Coverage of `rag_generator/` is at least 80%
 - [x] `ruff check .` and `ruff format --check .` are clean
 
 **Verification:**

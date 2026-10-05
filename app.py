@@ -65,7 +65,11 @@ with st.sidebar:
                     st.error(f"{f.name}: {e}")
 
     if active:
-        for src, n in store.list_sources(active).items():
+        st.divider()
+        sources_in_set = store.list_sources(active)
+        if not sources_in_set:
+            st.caption("No documents indexed yet.")
+        for src, n in sources_in_set.items():
             st.caption(f"{src} — {n} chunks")
         confirm = st.checkbox("Confirm delete")
         if st.button("Delete document set", disabled=not confirm):
