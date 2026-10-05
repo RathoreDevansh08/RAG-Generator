@@ -37,3 +37,77 @@ The tech stack is fixed:
 - **Generic:** One codebase works for any domain or document set.
 - **Runtime-driven:** All document handling happens while the app is running, through the UI.
 - **Simple to use:** A single Streamlit interface handles both uploading and asking questions.
+
+## Features
+
+- Supported formats: PDF, TXT, MD, DOCX, HTML, CSV, XLSX.
+- Named document sets, persisted in ChromaDB, so you can switch between sets without re-uploading.
+- Answers cite the source file and page (or row).
+- If the documents don't contain the answer, the app returns a fixed not-found reply.
+
+## Architecture
+
+Built with LangChain. The LLM is Groq `openai/gpt-oss-20b`, called through the OpenAI-compatible API. Embeddings are computed locally with `all-MiniLM-L6-v2`. Vectors are stored in a persisted ChromaDB.
+
+| Module | Role |
+|--------|------|
+| `app.py` | Streamlit UI |
+| `rag_generator/config.py` | Settings loaded from env / `.env` |
+| `rag_generator/loaders.py` | Per-format document loaders |
+| `rag_generator/ingest.py` | Parsing and chunking |
+| `rag_generator/store.py` | ChromaDB document-set storage and retrieval |
+| `rag_generator/llm.py` | LLM client setup |
+| `rag_generator/prompts.py` | Prompt templates |
+| `rag_generator/chain.py` | Retrieve-and-answer chain |
+
+See [SPEC.md](SPEC.md) and [tasks/plan.md](tasks/plan.md) for the full specification and plan.
+
+## Setup & Run
+
+```bash
+python -m venv .venv
+.venv\Scripts\activate            # Windows  (source .venv/bin/activate on macOS/Linux)
+pip install -r requirements.txt -r requirements-dev.txt
+copy .env.example .env            # then set LLM_API_KEY (free key from console.groq.com)
+
+streamlit run app.py
+```
+
+The first run downloads the ~90MB embedding model.
+
+## Configuration
+
+Set in `.env` (see `.env.example`):
+
+| Variable | Default | Purpose |
+|----------|---------|---------|
+| `LLM_BASE_URL` | `https://api.groq.com/openai/v1` | OpenAI-compatible endpoint |
+| `LLM_API_KEY` | (empty) | API key for the provider |
+| `LLM_MODEL` | `openai/gpt-oss-20b` | Model name |
+| `EMBEDDING_MODEL` | `sentence-transformers/all-MiniLM-L6-v2` | Local embedding model |
+| `CHROMA_DIR` | `data/chroma` | ChromaDB persistence directory |
+| `CHUNK_SIZE` | `1000` | Chunk size |
+| `CHUNK_OVERLAP` | `150` | Chunk overlap |
+| `TOP_K` | `4` | Chunks retrieved per question |
+
+Switch providers by env only, with no code change:
+
+- OpenRouter: `https://openrouter.ai/api/v1` / `openai/gpt-oss-20b:free`
+- Ollama: `http://localhost:11434/v1` / `gpt-oss:20b`
+- OpenAI: `https://api.openai.com/v1` / `gpt-4o-mini`
+
+## Testing
+
+```bash
+pytest -q
+ruff check .
+```
+
+Tests run offline using fake embeddings and a fake LLM.
+
+## Limitations
+
+- No OCR, so scanned PDFs are not supported.
+- Single-turn questions only (no conversation memory).
+- Groq free-tier rate limits apply.
+- Local, single-user app.
