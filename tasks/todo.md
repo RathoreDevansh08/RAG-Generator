@@ -6,7 +6,7 @@ See [plan.md](plan.md) for the architecture, interface contracts and risks. All 
 
 ## Phase 1: Foundation and a thin end-to-end slice
 
-## Task 1: Tooling and test scaffolding ✅ implemented, verification pending (deps installing)
+## Task 1: Tooling and test scaffolding ✅ verified (69 tests pass, ruff clean)
 
 **Description:** Add the project config and the shared offline test fixtures, so every later task can be tested without network access.
 
@@ -16,8 +16,8 @@ See [plan.md](plan.md) for the architecture, interface contracts and risks. All 
 - [x] `tests/conftest.py` provides the `settings` (a tmp Chroma dir), `fake_embeddings` (`DeterministicFakeEmbedding(size=64)`) and `store` fixtures
 
 **Verification:**
-- [ ] `pytest -q` runs with no errors (0 tests collected is fine)
-- [ ] `ruff check .` is clean
+- [x] `pytest -q` runs with no errors (0 tests collected is fine)
+- [x] `ruff check .` is clean
 
 **Dependencies:** None
 
@@ -27,7 +27,7 @@ See [plan.md](plan.md) for the architecture, interface contracts and risks. All 
 
 ---
 
-## Task 2: Index TXT/MD files into a named document set ✅ implemented, verification pending (deps installing)
+## Task 2: Index TXT/MD files into a named document set ✅ verified (69 tests pass, ruff clean)
 
 **Description:** Build the ingest path for plain text: load the file, split it into chunks with deterministic ids, and upsert them into a slugified Chroma collection.
 
@@ -37,7 +37,7 @@ See [plan.md](plan.md) for the architecture, interface contracts and risks. All 
 - [x] Two collections are isolated from each other, and `slugify("My Docs!")` returns `"my-docs"`
 
 **Verification:**
-- [ ] `pytest tests/test_loaders.py tests/test_ingest.py tests/test_store.py -q`
+- [x] `pytest tests/test_loaders.py tests/test_ingest.py tests/test_store.py -q`
 
 **Dependencies:** Task 1
 
@@ -47,7 +47,7 @@ See [plan.md](plan.md) for the architecture, interface contracts and risks. All 
 
 ---
 
-## Task 3: Answer a question with citations and the not-found fallback ✅ implemented, verification pending (deps installing)
+## Task 3: Answer a question with citations and the not-found fallback ✅ verified (69 tests pass, ruff clean)
 
 **Description:** Build the grounded QA chain: retrieve chunks, fill in a strict prompt, call the LLM, and return the answer text with source references.
 
@@ -57,7 +57,7 @@ See [plan.md](plan.md) for the architecture, interface contracts and risks. All 
 - [x] When the LLM replies with the not-found message, `sources` is empty
 
 **Verification:**
-- [ ] `pytest tests/test_chain.py -q`, using `FakeListChatModel` and a stub retriever
+- [x] `pytest tests/test_chain.py -q`, using `FakeListChatModel` and a stub retriever
 
 **Dependencies:** Task 1 (it can run in parallel with Task 2)
 
@@ -67,7 +67,7 @@ See [plan.md](plan.md) for the architecture, interface contracts and risks. All 
 
 ---
 
-## Task 4: Minimal Streamlit UI ✅ implemented, verification pending (deps installing)
+## Task 4: Minimal Streamlit UI ✅ verified (69 tests pass, ruff clean)
 
 **Description:** Wire up `app.py`. The user creates or picks a document set, uploads files, clicks Index, then chats. Each answer shows a Sources expander.
 
@@ -77,7 +77,7 @@ See [plan.md](plan.md) for the architecture, interface contracts and risks. All 
 - [x] The app calls `store.get_embeddings` through module attribute access, cached with `@st.cache_resource`
 
 **Verification:**
-- [ ] `pytest tests/test_app.py -q` (an `AppTest` smoke test that renders the app without exceptions)
+- [x] `pytest tests/test_app.py -q` (an `AppTest` smoke test that renders the app without exceptions)
 - [ ] Manual check: run `streamlit run app.py` with a real Groq key, then upload a txt file and ask a question
 
 **Dependencies:** Task 2, Task 3
@@ -89,7 +89,7 @@ See [plan.md](plan.md) for the architecture, interface contracts and risks. All 
 ---
 
 ## Checkpoint A: End-to-end on text files
-- [ ] `pytest -q` and `ruff check .` pass
+- [x] `pytest -q` and `ruff check .` pass
 - [ ] Manual check: a question answered from the docs shows a citation, and an unrelated question returns the exact not-found message
 - [ ] **This is the minimum deliverable that meets the core assessment requirements**
 
@@ -97,7 +97,7 @@ See [plan.md](plan.md) for the architecture, interface contracts and risks. All 
 
 ## Phase 2: Formats
 
-## Task 5: PDF, DOCX and HTML loaders ✅ implemented, verification pending (deps installing)
+## Task 5: PDF, DOCX and HTML loaders ✅ verified (69 tests pass, ruff clean)
 
 **Description:** Register loaders for PDF (one document per page, with a 1-based `page`), DOCX (`docx2txt`) and HTML (BeautifulSoup text).
 
@@ -107,7 +107,7 @@ See [plan.md](plan.md) for the architecture, interface contracts and risks. All 
 - [x] A PDF with no extractable text raises `EmptyDocumentError`
 
 **Verification:**
-- [ ] `pytest tests/test_loaders.py -q`, with fixtures generated at test time using fpdf2 and python-docx
+- [x] `pytest tests/test_loaders.py -q`, with fixtures generated at test time using fpdf2 and python-docx
 
 **Dependencies:** Task 2
 
@@ -117,7 +117,7 @@ See [plan.md](plan.md) for the architecture, interface contracts and risks. All 
 
 ---
 
-## Task 6: CSV and XLSX loaders ✅ implemented, verification pending (deps installing)
+## Task 6: CSV and XLSX loaders ✅ verified (69 tests pass, ruff clean)
 
 **Description:** Turn each row into one document (`col: value` lines) with `row`, `sheet` and `tabular=True`. Chunking leaves tabular documents unsplit.
 
@@ -127,7 +127,7 @@ See [plan.md](plan.md) for the architecture, interface contracts and risks. All 
 - [x] `split_documents` doesn't split short tabular rows
 
 **Verification:**
-- [ ] `pytest tests/test_loaders.py tests/test_ingest.py -q`
+- [x] `pytest tests/test_loaders.py tests/test_ingest.py -q`
 
 **Dependencies:** Task 2 (if run in parallel with Task 5, the same agent must own `loaders.py`)
 
@@ -139,7 +139,7 @@ See [plan.md](plan.md) for the architecture, interface contracts and risks. All 
 
 ## Checkpoint B: All formats
 - [ ] A fixture of every supported type (PDF, TXT, MD, DOCX, HTML, CSV, XLSX) indexes with a chunk count above 0
-- [ ] `pytest -q` passes
+- [x] `pytest -q` passes
 
 ---
 
@@ -155,7 +155,7 @@ See [plan.md](plan.md) for the architecture, interface contracts and risks. All 
 - [ ] Delete removes the collection, but only after the confirmation checkbox is ticked
 
 **Verification:**
-- [ ] `pytest tests/test_store.py tests/test_app.py -q`
+- [x] `pytest tests/test_store.py tests/test_app.py -q`
 - [ ] Manual check: create two sets with different docs, then confirm that answers come only from the active set
 
 **Dependencies:** Task 4
@@ -176,7 +176,7 @@ See [plan.md](plan.md) for the architecture, interface contracts and risks. All 
 - [ ] LLM errors show a friendly message, with a specific hint when the error is a rate limit
 
 **Verification:**
-- [ ] `pytest tests/test_app.py -q`, which checks the warning and the disabled chat when no key is set
+- [x] `pytest tests/test_app.py -q`, which checks the warning and the disabled chat when no key is set
 
 **Dependencies:** Task 4 (run it after Task 7, since both edit `app.py`)
 
@@ -193,11 +193,11 @@ See [plan.md](plan.md) for the architecture, interface contracts and risks. All 
 **Acceptance criteria:**
 - [ ] A new reader can follow the README to set up and run the app
 - [ ] Coverage of `rag_generator/` is at least 80%
-- [ ] `ruff check .` and `ruff format --check .` are clean
+- [x] `ruff check .` and `ruff format --check .` are clean
 
 **Verification:**
-- [ ] `pytest --cov=rag_generator --cov-report=term-missing`
-- [ ] `ruff check . && ruff format --check .`
+- [x] `pytest --cov=rag_generator --cov-report=term-missing`
+- [x] `ruff check . && ruff format --check .`
 
 **Dependencies:** Tasks 1–8
 
