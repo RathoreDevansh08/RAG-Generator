@@ -27,14 +27,14 @@ See [plan.md](plan.md) for the architecture, interface contracts and risks. All 
 
 ---
 
-## Task 2: Index TXT/MD files into a named document set
+## Task 2: Index TXT/MD files into a named document set ✅ implemented, verification pending (deps installing)
 
 **Description:** Build the ingest path for plain text: load the file, split it into chunks with deterministic ids, and upsert them into a slugified Chroma collection.
 
 **Acceptance criteria:**
-- [ ] `load_file` handles `.txt` and `.md`, sets `source`, and raises `UnsupportedFileError` or `EmptyDocumentError` when appropriate
-- [ ] `ingest_files` returns the chunk count per file. Ingesting the same file twice leaves `count()` unchanged.
-- [ ] Two collections are isolated from each other, and `slugify("My Docs!")` returns `"my-docs"`
+- [x] `load_file` handles `.txt` and `.md`, sets `source`, and raises `UnsupportedFileError` or `EmptyDocumentError` when appropriate
+- [x] `ingest_files` returns the chunk count per file. Ingesting the same file twice leaves `count()` unchanged.
+- [x] Two collections are isolated from each other, and `slugify("My Docs!")` returns `"my-docs"`
 
 **Verification:**
 - [ ] `pytest tests/test_loaders.py tests/test_ingest.py tests/test_store.py -q`
