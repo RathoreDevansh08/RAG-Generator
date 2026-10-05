@@ -47,14 +47,14 @@ See [plan.md](plan.md) for the architecture, interface contracts and risks. All 
 
 ---
 
-## Task 3: Answer a question with citations and the not-found fallback
+## Task 3: Answer a question with citations and the not-found fallback ✅ implemented, verification pending (deps installing)
 
 **Description:** Build the grounded QA chain: retrieve chunks, fill in a strict prompt, call the LLM, and return the answer text with source references.
 
 **Acceptance criteria:**
-- [ ] `answer_question` returns an `Answer` whose `sources` match the retrieved chunks (source, page or row, snippet)
-- [ ] When retrieval returns nothing, it returns `NOT_FOUND_MESSAGE` without calling the LLM
-- [ ] When the LLM replies with the not-found message, `sources` is empty
+- [x] `answer_question` returns an `Answer` whose `sources` match the retrieved chunks (source, page or row, snippet)
+- [x] When retrieval returns nothing, it returns `NOT_FOUND_MESSAGE` without calling the LLM
+- [x] When the LLM replies with the not-found message, `sources` is empty
 
 **Verification:**
 - [ ] `pytest tests/test_chain.py -q`, using `FakeListChatModel` and a stub retriever
@@ -67,14 +67,14 @@ See [plan.md](plan.md) for the architecture, interface contracts and risks. All 
 
 ---
 
-## Task 4: Minimal Streamlit UI
+## Task 4: Minimal Streamlit UI ✅ implemented, verification pending (deps installing)
 
 **Description:** Wire up `app.py`. The user creates or picks a document set, uploads files, clicks Index, then chats. Each answer shows a Sources expander.
 
 **Acceptance criteria:**
-- [ ] A new set can be created from the sidebar, and an uploaded `.txt` file is indexed with a success message showing its chunk count
-- [ ] Chat answers render with a Sources expander
-- [ ] The app calls `store.get_embeddings` through module attribute access, cached with `@st.cache_resource`
+- [x] A new set can be created from the sidebar, and an uploaded `.txt` file is indexed with a success message showing its chunk count
+- [x] Chat answers render with a Sources expander
+- [x] The app calls `store.get_embeddings` through module attribute access, cached with `@st.cache_resource`
 
 **Verification:**
 - [ ] `pytest tests/test_app.py -q` (an `AppTest` smoke test that renders the app without exceptions)
