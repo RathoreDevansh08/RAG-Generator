@@ -97,14 +97,14 @@ See [plan.md](plan.md) for the architecture, interface contracts and risks. All 
 
 ## Phase 2: Formats
 
-## Task 5: PDF, DOCX and HTML loaders
+## Task 5: PDF, DOCX and HTML loaders ✅ implemented, verification pending (deps installing)
 
 **Description:** Register loaders for PDF (one document per page, with a 1-based `page`), DOCX (`docx2txt`) and HTML (BeautifulSoup text).
 
 **Acceptance criteria:**
-- [ ] Each PDF page becomes its own document with `metadata["page"]`, and the answer cites it as `[file p.N]`
-- [ ] DOCX and HTML files produce non-empty text, with markup removed from HTML
-- [ ] A PDF with no extractable text raises `EmptyDocumentError`
+- [x] Each PDF page becomes its own document with `metadata["page"]`, and the answer cites it as `[file p.N]`
+- [x] DOCX and HTML files produce non-empty text, with markup removed from HTML
+- [x] A PDF with no extractable text raises `EmptyDocumentError`
 
 **Verification:**
 - [ ] `pytest tests/test_loaders.py -q`, with fixtures generated at test time using fpdf2 and python-docx
@@ -117,14 +117,14 @@ See [plan.md](plan.md) for the architecture, interface contracts and risks. All 
 
 ---
 
-## Task 6: CSV and XLSX loaders
+## Task 6: CSV and XLSX loaders ✅ implemented, verification pending (deps installing)
 
 **Description:** Turn each row into one document (`col: value` lines) with `row`, `sheet` and `tabular=True`. Chunking leaves tabular documents unsplit.
 
 **Acceptance criteria:**
-- [ ] A CSV with N rows gives N documents with `row` from 1 to N
-- [ ] Every sheet in an XLSX file is loaded with `metadata["sheet"]`
-- [ ] `split_documents` doesn't split short tabular rows
+- [x] A CSV with N rows gives N documents with `row` from 1 to N
+- [x] Every sheet in an XLSX file is loaded with `metadata["sheet"]`
+- [x] `split_documents` doesn't split short tabular rows
 
 **Verification:**
 - [ ] `pytest tests/test_loaders.py tests/test_ingest.py -q`
